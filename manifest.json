@@ -1,0 +1,11 @@
+{
+	"id": "obsidian-streamlit-bridge",
+	"name": "Obsidian Streamlit Bridge",
+	"version": "0.1.0",
+	"minAppVersion": "0.1.0",
+	"description": "",
+	"author": "Maxwell Anderson Ielpo do Amaral",
+	"authorUrl": "https://obsidian.md",
+	"fundingUrl": "https://obsidian.md/pricing",
+	"isDesktopOnly": true
+}
