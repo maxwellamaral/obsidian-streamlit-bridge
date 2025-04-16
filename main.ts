@@ -94,8 +94,8 @@ export default class StreamlitBridgePlugin extends Plugin {
 		);
 
 		this.addRibbonIcon("play", "Export to Streamlit", async () => {
-			const noteContent =
-				this.app.workspace.getActiveFile()?.getContent() || "";
+			const activeFile = this.app.workspace.getActiveFile();
+			const noteContent = activeFile ? await this.app.vault.read(activeFile) : "";
 			const response = await fetch("http://localhost:5000/generate", {
 				method: "POST",
 				body: JSON.stringify({ content: noteContent }),
@@ -141,9 +141,9 @@ class SampleModal extends Modal {
 }
 
 class SampleSettingTab extends PluginSettingTab {
-	plugin: HelloWorldPlugin;
+	plugin: StreamlitBridgePlugin;
 
-	constructor(app: App, plugin: HelloWorldPlugin) {
+	constructor(app: App, plugin: StreamlitBridgePlugin) {
 		super(app, plugin);
 		this.plugin = plugin;
 	}
