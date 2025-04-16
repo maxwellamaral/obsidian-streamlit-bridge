@@ -19,7 +19,7 @@ const DEFAULT_SETTINGS: MyPluginSettings = {
 	mySetting: "default",
 };
 
-export default class HelloWorldPlugin extends Plugin {
+export default class StreamlitBridgePlugin extends Plugin {
 	settings: MyPluginSettings;
 
 	async onload() {
@@ -93,8 +93,19 @@ export default class HelloWorldPlugin extends Plugin {
 			window.setInterval(() => console.log("setInterval"), 5 * 60 * 1000)
 		);
 
-		this.addRibbonIcon("dice", "Greet", () => {
-			new Notice("Hello, world!");
+		this.addRibbonIcon("play", "Export to Streamlit", async () => {
+			const noteContent =
+				this.app.workspace.getActiveFile()?.getContent() || "";
+			const response = await fetch("http://localhost:5000/generate", {
+				method: "POST",
+				body: JSON.stringify({ content: noteContent }),
+				headers: { "Content-Type": "application/json" },
+			});
+
+			if (response.ok) {
+				new Notice("Streamlit app generated!");
+				window.open("http://localhost:8501");
+			}
 		});
 	}
 
@@ -130,9 +141,9 @@ class SampleModal extends Modal {
 }
 
 class SampleSettingTab extends PluginSettingTab {
-	plugin: MyPlugin;
+	plugin: HelloWorldPlugin;
 
-	constructor(app: App, plugin: MyPlugin) {
+	constructor(app: App, plugin: HelloWorldPlugin) {
 		super(app, plugin);
 		this.plugin = plugin;
 	}
